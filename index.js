@@ -2,6 +2,7 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
+const ObjectId = require('mongodb').ObjectId;
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
@@ -11,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${ process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jy11d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-// console.log(uri)
+
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -20,24 +21,60 @@ async function run(){
         await client.connect();
         const database = client.db("niche_products");
         const productsCollection= database.collection("products");
+        const ordersCollection= database.collection("orders");
 
 
         // get api  
         app.get('/products',async(req,res)=>{
             const cursor = productsCollection.find({});
             const products = await cursor.toArray();
-            console.log(products);
             res.send(products)
         })
+
+
+        //  get single product api 
+    app.get('/products/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query = { _id:ObjectId(id) };
+        const product = await productsCollection.findOne(query);
+        res.json(product);
+
+    });
+
+
+    //post order api 
+  app.post("/orders", async (req, res) => {
+    const result = await ordersCollection.insertOne(req.body);
+    res.send(result);
+  });
+
+  ///get  all orders
+  app.get("/orders", async (req, res) => {
+    const result = await ordersCollection.find({}).toArray();
+    res.send(result);
+  });
+
+     //Get single user orders
+     app.get('/myOrders/:email', async (req, res) => {
+        const email = req.params.email;
+        const query = { email: email };
+        const order = await ordersCollection.find(query).toArray();
+        res.send(order)
+    });
+
+   //Delete Order
+   app.delete('/deleteOrder/:id', async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: ObjectId(id) }
+    const order = await ordersCollection.deleteOne(query);
+    res.json(order);
+})
     
 
         // post api 
     app.post('/products',async(req,res)=>{
         const product = req.body;
-        // console.log('hit the post api',product)
-       
         const result =await productsCollection.insertOne(product);
-        console.log(result)
         res.json(result)
     })
         
@@ -61,6 +98,3 @@ app.listen(port, () => {
 
 
 
-
-// https://elementorpress.com/templatekit-pro/layout08/#
-// https://elementorpress.com/templatekit-pro/layout08/home-02/
