@@ -23,6 +23,7 @@ async function run(){
         const productsCollection= database.collection("products");
         const usersCollection =database.collection("users");
         const ordersCollection= database.collection("orders");
+        const reviewCollection = client.db("niche_products").collection("reviews");
 
 
         // get api  
@@ -42,6 +43,14 @@ async function run(){
 
     });
 
+    // delete products api 
+    app.delete('/products:id', async(req,res)=>{
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) }
+        const result = await productsCollection.deleteOne(query);
+        res.json(result);
+    })
+
 
     //post order api 
   app.post("/orders", async (req, res) => {
@@ -54,6 +63,20 @@ async function run(){
     const result = await ordersCollection.find({}).toArray();
     res.send(result);
   });
+
+   // status update
+   app.put("/statusUpdate/:id", async (req, res) => {
+    const filter = { _id: ObjectId(req.params.id) };
+    
+    const result = await ordersCollection.updateOne(filter, {
+      $set: {
+        status: req.body.status,
+      },
+    });
+    res.send(result);
+    console.log(result);
+  });
+
 
      //Get single user orders
      app.get('/myOrders/:email', async (req, res) => {
@@ -114,9 +137,21 @@ async function run(){
         const filter = {email: user.email};
         const updateDoc = { $set: { role: 'admin'}};
         const result = await usersCollection.updateOne(filter,updateDoc);
-        console.log(result);
+        
         res.json(result)
     })
+
+
+    // review
+  app.post("/reviews", async (req, res) => {
+    const result = await reviewCollection.insertOne(req.body);
+    res.json(result);
+  });
+  app.get("/reviews", async (req, res) => {
+    const result = await reviewCollection.find({}).toArray();
+    console.log(result)
+    res.send(result);
+  });
 
 }
     finally{
@@ -135,5 +170,5 @@ app.listen(port, () => {
 })
 
 
-
+// https://bikexchange.com/best-bike-brands/
 
