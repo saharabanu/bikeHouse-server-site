@@ -133,7 +133,6 @@ async function run(){
         // make admin 
     app.put('/users/admin', async(req,res)=>{
         const user = req.body;
-        console.log('put',user)
         const filter = {email: user.email};
         const updateDoc = { $set: { role: 'admin'}};
         const result = await usersCollection.updateOne(filter,updateDoc);
@@ -149,7 +148,6 @@ async function run(){
   });
   app.get("/reviews", async (req, res) => {
     const result = await reviewCollection.find({}).toArray();
-    console.log(result)
     res.send(result);
   });
 
@@ -170,5 +168,5 @@ app.listen(port, () => {
 })
 
 
-// https://bikexchange.com/best-bike-brands/
+
 
