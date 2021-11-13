@@ -63,18 +63,22 @@ async function run(){
     const result = await ordersCollection.find({}).toArray();
     res.send(result);
   });
+  
 
    // status update
-   app.put("/statusUpdate/:id", async (req, res) => {
-    const filter = { _id: ObjectId(req.params.id) };
-    
-    const result = await ordersCollection.updateOne(filter, {
-      $set: {
-        status: req.body.status,
+   app.put("/orders/:id", async (req, res) => {
+     const id = req.params.id;
+    const filter = { _id: ObjectId(id) };
+    const options = { upsert: true };
+    const updateDoc= { $set: {
+        status: "Shipped"
       },
-    });
-    res.send(result);
-    console.log(result);
+
+    };
+    const result = await ordersCollection.updateOne(filter,updateDoc,options);
+   
+    res.json(result)
+    
   });
 
 
