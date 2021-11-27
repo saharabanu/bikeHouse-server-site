@@ -18,8 +18,8 @@ niche-website-server-side-saharabanu created by GitHub Classroom
 
 
 
-#### 4. Our Cycle can help you  to reward individuals and businesses for their commitment to cleaner air, personal health, and the use of pedaling energy in order to create a more sustainable community.
+#### 5. Our Cycle can help you  to reward individuals and businesses for their commitment to cleaner air, personal health, and the use of pedaling energy in order to create a more sustainable community.
 
-#### 5:BikeHouse is a trusted partner of bike manufacturers all over the world. It’s the natural choice for your e-bike
+#### 6:BikeHouse is a trusted partner of bike manufacturers all over the world. It’s the natural choice for your e-bike
 
-#### 6: Travel anywhere in Bangladesh, a BikeHouse dealer won't be far away. Support is always close at hand.
+#### 7: Travel anywhere in Bangladesh, a BikeHouse dealer won't be far away. Support is always close at hand.
